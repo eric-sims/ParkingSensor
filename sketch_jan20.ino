@@ -1,30 +1,30 @@
 
 /*
 * Garage Parking Sensor - Published By Bob Torrence
-* forked and recreated by Eric Sims
 */
-#include   <FastLED.h>
+#include <FastLED.h>
 #include <QuickStats.h>
 #include <stdio.h>
 
 QuickStats stats; //initialize an instance   of this class
 // defining the pins
-#define LED_PIN     7
-#define NUM_LEDS     90
-const int trigPin = 9;
-const int echoPin = 10;
+#define LED_PIN  3
+#define NUM_LEDS 90
+#define TRIG_PIN 9
+#define ECHO_PIN 10
+
 // defining variables
 CRGB   leds[NUM_LEDS];
 float duration;
 float durationarray[15];
 int distance;
-float   stopdistance=20.0;   //parking position from sensor (CENTIMETERS)
-float startdistance=100.0;   //distance from sensor to begin scan as car pulls in(CENTIMETERS) 
+float   stopdistance=30.0;   //parking position from sensor (CENTIMETERS)
+float startdistance=350.0;   //distance from sensor to begin scan as car pulls in (CENTIMETERS) 
 int increment=((startdistance-stopdistance)/15);
 
 void setup() {
-  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
-  pinMode(echoPin,   INPUT); // Sets the echoPin as an Input
+  pinMode(TRIG_PIN, OUTPUT); // Sets the TRIG_PIN as an Output
+  pinMode(ECHO_PIN,   INPUT); // Sets the ECHO_PIN as an Input
   FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
   Serial.begin(9600); // Starts the serial communication
 
@@ -32,29 +32,24 @@ void setup() {
 
 void loop() {
   distance = calculateDistance();
-  // Prints the distance on the Serial   Monitor
-  Serial.print("Distance: ");
-  Serial.println(distance);
 
   displayBar(distance);
 }
 
 int calculateDistance() {
   for (int i=0;i<=14;i++) {
-    // Clears the trigPin
-    digitalWrite(trigPin,   LOW);
+    // Clears the TRIG_PIN
+    digitalWrite(TRIG_PIN,   LOW);
     delayMicroseconds(2);
     
-    // Sets the trigPin on HIGH state for 10 micro   seconds
-    digitalWrite(trigPin, HIGH);
+    // Sets the TRIG_PIN on HIGH state for 10 microseconds
+    digitalWrite(TRIG_PIN, HIGH);
     delayMicroseconds(10);
-    digitalWrite(trigPin,   LOW);
+    digitalWrite(TRIG_PIN,   LOW);
 
-    // Reads the echoPin, returns the sound wave travel time in microseconds
-    durationarray[i] = pulseIn(echoPin, HIGH);
+    // Reads the ECHO_PIN, returns the sound wave travel time in microseconds
+    durationarray[i] = pulseIn(ECHO_PIN, HIGH);
     distance= durationarray[i]*0.034/2;
-    // Serial.print(distance);
-    // Serial.print("   ");
   }
 
   duration = (stats.median(durationarray,15));
@@ -80,7 +75,6 @@ void displayBar(int distance) {
 
 void displayPartialYellow(float normalizedDistance) {
   int ledsToShow = normalizedDistance * NUM_LEDS;
-  Serial.println(ledsToShow);
 
   for (int i = 0; i < ledsToShow; i++) {
     yellowPixel(i);
