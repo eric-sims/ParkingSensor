@@ -32,7 +32,6 @@ void setup() {
 
 void loop() {
   distance = calculateDistance();
-
   displayBar(distance);
 }
 
@@ -65,10 +64,10 @@ void displayBar(int distance) {
 
   float normDistance = normalizeDistance(distance);
 
-  if (normDistance < 0.99 && normDistance > 0.1) {
-    displayPartialYellow(normDistance);
-  } else if (normDistance > 1.0) {
+  if (normDistance > 1.0) {
     displayAllGreen();
+  } else if (normDistance > 0.1) {
+    displayPartialYellow(normDistance);
   }
   
 }
