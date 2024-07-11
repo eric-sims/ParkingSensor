@@ -1,6 +1,7 @@
 
 /*
-* Garage Parking Sensor - Published By Bob Torrence
+* Garage Parking Sensor - Inspired By Bob Torrence (https://projecthub.arduino.cc/Bcjams/garage-parking-assistant-55c22c)
+* Forked and Modified by Eric Sims 
 */
 #include <FastLED.h>
 #include <QuickStats.h>
