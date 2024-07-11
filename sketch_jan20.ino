@@ -6,14 +6,13 @@
 #include <QuickStats.h>
 #include <stdio.h>
 
-QuickStats stats; //initialize an instance   of this class
-// defining the pins
+QuickStats stats; 
+
 #define LED_PIN  3
 #define NUM_LEDS 90
 #define TRIG_PIN 9
 #define ECHO_PIN 10
 
-// defining variables
 CRGB   leds[NUM_LEDS];
 float duration;
 float durationarray[15];
@@ -38,13 +37,13 @@ void loop() {
 int calculateDistance() {
   for (int i=0;i<=14;i++) {
     // Clears the TRIG_PIN
-    digitalWrite(TRIG_PIN,   LOW);
+    digitalWrite(TRIG_PIN, LOW);
     delayMicroseconds(2);
     
     // Sets the TRIG_PIN on HIGH state for 10 microseconds
     digitalWrite(TRIG_PIN, HIGH);
     delayMicroseconds(10);
-    digitalWrite(TRIG_PIN,   LOW);
+    digitalWrite(TRIG_PIN, LOW);
 
     // Reads the ECHO_PIN, returns the sound wave travel time in microseconds
     durationarray[i] = pulseIn(ECHO_PIN, HIGH);
